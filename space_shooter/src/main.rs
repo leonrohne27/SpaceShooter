@@ -9,17 +9,22 @@ fn main() {
 
 fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands.spawn(Camera2d);
-    commands.spawn((
-        Text::new("Space Shooter"),
-        TextFont {
-            font: asset_server.load("Bonus/kenvector_future_thin.ttf").into(),
-            ..Default::default()
-        },
-        Node {
-            position_type: PositionType::Absolute,
+    commands
+        .spawn((Node {
+            width: Val::Percent(100.0),
+            height: Val::Percent(100.0),
+            justify_content: JustifyContent::Center,
             top: Val::Px(20.0),
-            left: Val::Px(20.0),
             ..default()
-        },
-    ));
+        },))
+        .with_children(|parent| {
+            parent.spawn((
+                Text::new("Space Shooter"),
+                TextFont {
+                    font: asset_server.load("Bonus/kenvector_future_thin.ttf").into(),
+                    font_size: FontSize::Px(50.0),
+                    ..default()
+                },
+            ));
+        });
 }

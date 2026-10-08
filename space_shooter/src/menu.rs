@@ -10,6 +10,18 @@ impl Plugin for MenuPlugin {
 
 fn spawn_menu(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands.spawn(Camera2d);
+
+    commands.spawn((
+        ImageNode::new(asset_server.load("Backgrounds/darkPurple.png")),
+        Node {
+            width: Val::Percent(100.0),
+            height: Val::Percent(100.0),
+            position_type: PositionType::Absolute,
+            ..default()
+        },
+        ZIndex(-1),
+    ));
+
     commands
         .spawn((Node {
             width: Val::Percent(100.0),

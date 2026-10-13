@@ -19,10 +19,6 @@ impl Plugin for MenuPlugin {
     }
 }
 
-const NORMAL_BUTTON: Color = Color::srgb(0.15, 0.15, 0.15);
-const HOVERED_BUTTON: Color = Color::srgb(0.25, 0.25, 0.25);
-const PRESSED_BUTTON: Color = Color::srgb(0.35, 0.75, 0.35);
-
 fn spawn_menu(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands.spawn((
         MenuUI,
@@ -88,6 +84,6 @@ fn despawn_menu(mut commands: Commands, query: Query<Entity, With<MenuUI>>) {
     }
 }
 
-fn play_clicked(activate: On<Activate>, mut next_state: ResMut<NextState<AppState>>) {
+fn play_clicked(_activate: On<Activate>, mut next_state: ResMut<NextState<AppState>>) {
     next_state.set(AppState::InGame);
 }

@@ -1,13 +1,7 @@
 use bevy::{
-    color::palettes::basic::*,
-    picking::hover::Hovered,
     prelude::*,
-    ui::Pressed,
-    ui_widgets::{Activate, Button, observe},
+    ui_widgets::{Button, observe},
 };
-
-#[derive(Component)]
-pub struct PlayButton;
 
 pub fn button(asset_server: &AssetServer, text: &'static str) -> impl Bundle {
     (

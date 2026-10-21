@@ -1,10 +1,14 @@
+mod bullet;
 mod button;
 mod game;
 mod menu;
+mod player;
 
 use bevy::prelude::*;
+use bullet::BulletPlugin;
 use game::GamePlugin;
 use menu::MenuPlugin;
+use player::PlayerPlugin;
 
 #[derive(States, Debug, Clone, Copy, Default, Eq, PartialEq, Hash)]
 enum AppState {
@@ -28,6 +32,8 @@ fn main() {
         .init_state::<AppState>()
         .add_plugins(MenuPlugin)
         .add_plugins(GamePlugin)
+        .add_plugins(PlayerPlugin)
+        .add_plugins(BulletPlugin)
         .run();
 }
 

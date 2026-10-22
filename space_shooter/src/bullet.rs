@@ -20,7 +20,7 @@ fn bullet_shot(
     mut commands: Commands,
     asset_server: Res<AssetServer>,
     keys: Res<ButtonInput<KeyCode>>,
-    mut player_query: Query<&mut Transform, With<Player>>,
+    player_query: Query<&mut Transform, With<Player>>,
 ) {
     if !keys.just_pressed(KeyCode::Space) {
         return;
@@ -40,7 +40,7 @@ fn bullet_shot(
 }
 
 fn bullet_movement(mut bullet_query: Query<&mut Transform, With<Bullet>>, time: Res<Time>) {
-    for mut transform in &mut bullet_query {
-        transform.translation.y += 800. * time.delta_secs();
+    for mut bullet in &mut bullet_query {
+        bullet.translation.y += 1000. * time.delta_secs();
     }
 }

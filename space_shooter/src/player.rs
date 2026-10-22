@@ -32,10 +32,10 @@ fn player_movement(
     let left = -right;
     for mut transform in &mut query {
         if keys.pressed(KeyCode::ArrowRight) {
-            transform.translation.x += 350. * time.delta_secs();
+            transform.translation.x += 600. * time.delta_secs();
         }
         if keys.pressed(KeyCode::ArrowLeft) {
-            transform.translation.x -= 350. * time.delta_secs();
+            transform.translation.x -= 600. * time.delta_secs();
         }
 
         if transform.translation.x > right {

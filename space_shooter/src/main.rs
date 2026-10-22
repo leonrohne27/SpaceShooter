@@ -3,12 +3,14 @@ mod button;
 mod game;
 mod menu;
 mod player;
+mod health;
 
 use bevy::prelude::*;
 use bullet::BulletPlugin;
 use game::GamePlugin;
 use menu::MenuPlugin;
 use player::PlayerPlugin;
+use game::update_health_ui_system;
 
 #[derive(States, Debug, Clone, Copy, Default, Eq, PartialEq, Hash)]
 enum AppState {
@@ -20,6 +22,7 @@ enum AppState {
 fn main() {
     App::new()
         .add_systems(Startup, setup)
+        .add_systems(Update, update_health_ui_system)
         .add_plugins(DefaultPlugins.set(WindowPlugin {
             primary_window: Some(Window {
                 title: "SpaceShooter".into(),

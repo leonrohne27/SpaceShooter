@@ -1,5 +1,6 @@
 use crate::AppState;
 use bevy::prelude::*;
+use crate::health::Health;
 
 pub struct PlayerPlugin;
 
@@ -16,6 +17,7 @@ impl Plugin for PlayerPlugin {
 fn load_player(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands.spawn((
         Player,
+        Health::new(5.0),
         Sprite::from_image(asset_server.load("PNG/playerShip1_blue.png")),
         Transform::from_xyz(0.0, -200.0, 1.0),
     ));

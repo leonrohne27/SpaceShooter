@@ -2,6 +2,7 @@ mod asteroid;
 mod bullet;
 mod button;
 mod game;
+mod health;
 mod menu;
 mod player;
 
@@ -9,6 +10,7 @@ use asteroid::AsteroidPlugin;
 use bevy::prelude::*;
 use bullet::BulletPlugin;
 use game::GamePlugin;
+use health::HealthPlugin;
 use menu::MenuPlugin;
 use player::PlayerPlugin;
 
@@ -37,6 +39,7 @@ fn main() {
         .add_plugins(PlayerPlugin)
         .add_plugins(BulletPlugin)
         .add_plugins(AsteroidPlugin)
+        .add_plugins(HealthPlugin)
         .run();
 }
 

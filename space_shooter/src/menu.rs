@@ -16,6 +16,7 @@ impl Plugin for MenuPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(OnEnter(AppState::Menu), spawn_menu);
         app.add_systems(OnExit(AppState::Menu), despawn_menu);
+        app.add_observer(button_on_hover);
     }
 }
 

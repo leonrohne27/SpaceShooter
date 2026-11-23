@@ -71,7 +71,7 @@ fn spawn_enemy(
 
     commands.spawn((
         Enemy,
-        EnemyShootTimer(Timer::from_seconds(5.0, TimerMode::Repeating)),
+        EnemyShootTimer(Timer::from_seconds(1.5, TimerMode::Repeating)),
         Sprite::from_image(asset_server.load("PNG/Enemies/enemyRed1.png")),
         Transform::from_xyz(spawn_pos.x, spawn_pos.y, 1.0),
     ));

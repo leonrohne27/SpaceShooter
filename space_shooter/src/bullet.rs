@@ -6,7 +6,7 @@ use bevy::prelude::*;
 pub struct BulletPlugin;
 
 #[derive(Component)]
-struct PlayerBullet;
+pub struct PlayerBullet;
 
 #[derive(Component)]
 pub struct EnemyBullet;
@@ -79,6 +79,6 @@ fn enemy_bullet_movement(
     time: Res<Time>,
 ) {
     for mut bullet in bullet_query.iter_mut() {
-        bullet.translation.y -= 400.0 * time.delta_secs();
+        bullet.translation.y -= 600.0 * time.delta_secs();
     }
 }

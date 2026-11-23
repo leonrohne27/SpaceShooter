@@ -11,7 +11,7 @@ pub struct AsteroidSpawner {
 }
 
 #[derive(Component)]
-struct Asteroid;
+pub struct Asteroid;
 
 #[derive(Debug, Clone, Copy, Component)]
 enum AsteroidSize {
@@ -87,7 +87,7 @@ fn spawn_asteroid(
     }
 
     // asteroids spawn time should vary
-    spawner.timer = Timer::from_seconds(rng.random_range(0.3..1.2), TimerMode::Once)
+    spawner.timer = Timer::from_seconds(rng.random_range(0.8..2.0), TimerMode::Once)
 }
 
 fn move_asteroid(mut asteroid_query: Query<&mut Transform, With<Asteroid>>, time: Res<Time>) {

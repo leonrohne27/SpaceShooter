@@ -3,6 +3,7 @@ mod bullet;
 mod button;
 mod enemy;
 mod game;
+mod health;
 mod menu;
 mod player;
 
@@ -11,6 +12,7 @@ use bevy::prelude::*;
 use bullet::BulletPlugin;
 use enemy::EnemyPlugin;
 use game::GamePlugin;
+use health::HealthPlugin;
 use menu::MenuPlugin;
 use player::PlayerPlugin;
 
@@ -39,6 +41,7 @@ fn main() {
         .add_plugins(PlayerPlugin)
         .add_plugins(BulletPlugin)
         .add_plugins(AsteroidPlugin)
+        .add_plugins(HealthPlugin)
         .add_plugins(EnemyPlugin)
         .run();
 }

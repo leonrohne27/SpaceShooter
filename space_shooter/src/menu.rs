@@ -3,6 +3,7 @@ use crate::button::*;
 use bevy::{
     prelude::*,
     ui_widgets::{Activate, observe},
+    app::AppExit,
 };
 
 #[derive(Component)]
@@ -10,12 +11,17 @@ struct MenuUI;
 
 #[derive(Component)]
 struct PlayButton;
+#[derive(Component)]
+struct SettingsButton;
+#[derive(Component)]
+struct QuitButton;
 pub struct MenuPlugin;
 
 impl Plugin for MenuPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(OnEnter(AppState::Menu), spawn_menu);
         app.add_systems(OnExit(AppState::Menu), despawn_menu);
+        app.add_systems(Update, button_on_hover.run_if(in_state(AppState::Menu)));
     }
 }
 
@@ -73,8 +79,16 @@ fn spawn_menu(mut commands: Commands, asset_server: Res<AssetServer>) {
                 PlayButton,
                 observe(play_clicked),
             ));
-            parent.spawn(button(&asset_server, "Settings"));
-            parent.spawn(button(&asset_server, "Quit Game"));
+            parent.spawn((
+                button(&asset_server, "Settings"),
+                SettingsButton,
+                observe(settings_clicked),
+            ));
+            parent.spawn((
+                button(&asset_server, "Quit Game"),
+                QuitButton,
+                observe(quit_clicked),
+            ));
         });
 }
 
@@ -86,4 +100,12 @@ fn despawn_menu(mut commands: Commands, query: Query<Entity, With<MenuUI>>) {
 
 fn play_clicked(_activate: On<Activate>, mut next_state: ResMut<NextState<AppState>>) {
     next_state.set(AppState::InGame);
+}
+
+fn settings_clicked(_activate: On<Activate>, mut next_state: ResMut<NextState<AppState>>) {
+    next_state.set(AppState::Settings);
+}
+
+fn quit_clicked(_activate: On<Activate>, mut exit:MessageWriter<AppExit>) {
+    exit.write(AppExit::Success);
 }

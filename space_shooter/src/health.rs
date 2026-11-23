@@ -6,8 +6,8 @@ pub struct HealthPlugin;
 
 #[derive(Component, Clone, Copy, Debug)]
 pub struct Health {
-    pub current: f32,
-    pub max: f32,
+    pub current: u8,
+    pub max: u8,
 }
 
 #[derive(Component)]
@@ -29,7 +29,7 @@ impl Plugin for HealthPlugin {
 }
 
 impl Health {
-    pub fn new(max: f32) -> Self {
+    pub fn new(max: u8) -> Self {
         Self { current: max, max }
     }
 }
@@ -78,11 +78,15 @@ fn spawn_hearts(
 
 fn update_health_ui_system(
     player_query: Query<&Health, With<Player>>,
-    mut text_query: Query<&mut Text, With<HealthUI>>,
+    mut heart_query: Query<(&HeartIcon, &mut Visibility)>,
 ) {
     if let Ok(health) = player_query.single() {
-        for mut text in text_query.iter_mut() {
-            **text = format!("HP: {:.0} / {:.0}", health.current, health.max);
+        for (heart, mut visibility) in heart_query.iter_mut() {
+            if heart.index < health.current as u8 {
+                *visibility = Visibility::Visible;
+            } else {
+                *visibility = Visibility::Hidden;
+            }
         }
     }
 }

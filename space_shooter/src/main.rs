@@ -4,6 +4,7 @@ mod button;
 mod game;
 mod menu;
 mod player;
+mod settings;
 
 use asteroid::AsteroidPlugin;
 use bevy::prelude::*;
@@ -11,11 +12,13 @@ use bullet::BulletPlugin;
 use game::GamePlugin;
 use menu::MenuPlugin;
 use player::PlayerPlugin;
+use settings::SettingsPlugin;
 
 #[derive(States, Debug, Clone, Copy, Default, Eq, PartialEq, Hash)]
 enum AppState {
     #[default]
     Menu,
+    Settings,
     InGame,
 }
 
@@ -33,6 +36,7 @@ fn main() {
         }))
         .init_state::<AppState>()
         .add_plugins(MenuPlugin)
+        .add_plugins(SettingsPlugin)
         .add_plugins(GamePlugin)
         .add_plugins(PlayerPlugin)
         .add_plugins(BulletPlugin)

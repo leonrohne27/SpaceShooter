@@ -8,7 +8,7 @@ pub fn button(asset_server: &AssetServer, text: &'static str) -> impl Bundle {
         Button,
         Hovered::default(),
         Node {
-            width: px(3000),
+            width: px(300),
             height: px(65),
             // horizontally center child text
             justify_content: JustifyContent::Center,

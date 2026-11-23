@@ -28,9 +28,14 @@ impl Plugin for ScorePlugin {
 }
 
 // Display the Score
-fn spawn_score_ui(mut commands: Commands) {
+fn spawn_score_ui(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands.spawn((
         Text::new("Score: 0"),
+        TextFont {
+            font: asset_server.load("Bonus/kenvector_future_thin.ttf").into(),
+            font_size: FontSize::Px(25.0),
+            ..default()
+        },
         Node {
             position_type: PositionType::Absolute,
             top: Val::Px(10.0),

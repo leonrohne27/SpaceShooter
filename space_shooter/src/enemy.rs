@@ -15,9 +15,11 @@ pub struct EnemyShootTimer(pub Timer);
 
 impl Plugin for EnemyPlugin {
     fn build(&self, app: &mut App) {
+        let mut rng = rand::rng();
+
         app.insert_resource(EnemySpawnTimer(Timer::from_seconds(
-            3.0,
-            TimerMode::Repeating,
+            rng.random_range(2.0..3.0),
+            TimerMode::Once,
         )));
         app.add_systems(Update, (spawn_enemy, enemy_shoot_timer));
     }
@@ -75,6 +77,7 @@ fn spawn_enemy(
         Sprite::from_image(asset_server.load("PNG/Enemies/enemyRed1.png")),
         Transform::from_xyz(spawn_pos.x, spawn_pos.y, 1.0),
     ));
+    timer.0 = Timer::from_seconds(rng.random_range(2.0..3.0), TimerMode::Once);
 }
 
 fn enemy_shoot_timer(time: Res<Time>, mut query: Query<&mut EnemyShootTimer, With<Enemy>>) {

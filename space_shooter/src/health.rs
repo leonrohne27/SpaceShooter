@@ -21,9 +21,10 @@ pub struct HeartIcon {
 impl Plugin for HealthPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(OnEnter(AppState::InGame), spawn_hearts);
+        app.add_systems(OnExit(AppState::InGame), despawn_hearts);
         app.add_systems(
             Update,
-            update_health_ui_system.run_if(in_state(AppState::InGame)),
+            update_health_ui_system.run_if(crate::escmenu::gameplay_running),
         );
     }
 }
@@ -45,7 +46,9 @@ fn spawn_hearts(
         5 // Fallback, falls kein Player gefunden wurde
     };
     commands
-        .spawn((Node {
+        .spawn((
+            HealthUI,
+            Node {
             width: Val::Percent(100.0),
             position_type: PositionType::Absolute,
             justify_content: JustifyContent::Center,
@@ -74,6 +77,12 @@ fn spawn_hearts(
                     }
                 });
         });
+}
+
+fn despawn_hearts(mut commands: Commands, query: Query<Entity, With<HealthUI>>){
+    for entity in &query {
+        commands.entity(entity).despawn();
+    }
 }
 
 fn update_health_ui_system(

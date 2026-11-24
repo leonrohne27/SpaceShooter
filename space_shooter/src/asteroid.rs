@@ -29,8 +29,10 @@ impl Plugin for AsteroidPlugin {
         });
         app.add_systems(
             Update,
-            (spawn_asteroid, move_asteroid).run_if(in_state(AppState::InGame)),
+            (spawn_asteroid, move_asteroid).run_if(crate::escmenu::gameplay_running),
         );
+        app.add_systems(OnExit(AppState::InGame), despawn_asteroids);
+        app.add_systems(OnEnter(AppState::InGame), reset_asteroid_spawner);
     }
 }
 
@@ -88,6 +90,18 @@ fn spawn_asteroid(
 
     // asteroids spawn time should vary
     spawner.timer = Timer::from_seconds(rng.random_range(0.8..2.0), TimerMode::Once)
+}
+
+fn despawn_asteroids(mut commands: Commands, asteroids: Query<Entity, With<Asteroid>>) {
+    for entity in &asteroids {
+        commands.entity(entity).despawn();
+    }
+}
+
+fn reset_asteroid_spawner(mut spawner: ResMut<AsteroidSpawner>) {
+    let mut rng = rand::rng();
+
+    spawner.timer = Timer::from_seconds(rng.random_range(2.0..3.0), TimerMode::Once)
 }
 
 fn move_asteroid(mut asteroid_query: Query<&mut Transform, With<Asteroid>>, time: Res<Time>) {

@@ -21,8 +21,15 @@ impl Plugin for BulletPlugin {
                 player_bullet_movement,
                 enemy_bullet_movement,
             )
-                .run_if(in_state(AppState::InGame)),
+                .run_if(crate::escmenu::gameplay_running),
         );
+        app.add_systems(OnExit(AppState::InGame), despawn_bullets);
+    }
+}
+
+fn despawn_bullets(mut commands: Commands, bullets: Query<Entity, Or<(With<PlayerBullet>, With<EnemyBullet>)>>) {
+    for entity in &bullets {
+        commands.entity(entity).despawn();
     }
 }
 

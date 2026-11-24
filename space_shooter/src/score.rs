@@ -1,5 +1,5 @@
 use crate::AppState;
-use bevy::prelude::*;
+use bevy::{ecs::entity, prelude::*, state::commands};
 
 pub struct ScorePlugin;
 
@@ -20,15 +20,19 @@ impl Plugin for ScorePlugin {
         app.insert_resource(ScoreTimer(Timer::from_seconds(1.0, TimerMode::Repeating)));
 
         app.add_systems(OnEnter(AppState::InGame), spawn_score_ui);
+        app.add_systems(OnExit(AppState::InGame), despawn_score_ui);
         app.add_systems(
             Update,
-            (score_over_time, update_score_ui).run_if(in_state(AppState::InGame)),
+            (score_over_time, update_score_ui).run_if(crate::escmenu::gameplay_running),
         );
     }
 }
 
 // Display the Score
-fn spawn_score_ui(mut commands: Commands, asset_server: Res<AssetServer>) {
+fn spawn_score_ui(mut commands: Commands, asset_server: Res<AssetServer>, mut score: ResMut<Score>, mut timer: ResMut<ScoreTimer>) {
+
+    score.points = 0;
+    timer.0.reset();
     commands.spawn((
         Text::new("Score: 0"),
         TextFont {
@@ -44,6 +48,12 @@ fn spawn_score_ui(mut commands: Commands, asset_server: Res<AssetServer>) {
         },
         ScoreUI,
     ));
+}
+
+fn despawn_score_ui(mut commands: Commands, query: Query<Entity, With<ScoreUI>>){
+    for entity in &query {
+        commands.entity(entity).despawn();
+    }
 }
 
 fn update_score_ui(score: Res<Score>, mut query: Query<&mut Text, With<ScoreUI>>) {

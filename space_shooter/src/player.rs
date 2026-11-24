@@ -1,5 +1,6 @@
 use crate::AppState;
 use crate::health::Health;
+use bevy::ecs::entity;
 use bevy::prelude::*;
 
 pub struct PlayerPlugin;
@@ -10,7 +11,8 @@ pub struct Player;
 impl Plugin for PlayerPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(OnEnter(AppState::InGame), load_player);
-        app.add_systems(Update, player_movement.run_if(in_state(AppState::InGame)));
+        app.add_systems(OnExit(AppState::InGame), despawn_player);
+        app.add_systems(Update, player_movement.run_if(crate::escmenu::gameplay_running));
     }
 }
 
@@ -21,6 +23,12 @@ fn load_player(mut commands: Commands, asset_server: Res<AssetServer>) {
         Sprite::from_image(asset_server.load("PNG/playerShip1_blue.png")),
         Transform::from_xyz(0.0, -200.0, 1.0),
     ));
+}
+
+fn despawn_player(mut commands: Commands, players: Query<Entity, With<Player>>){
+    for entity in &players {
+        commands.entity(entity).despawn();
+    }
 }
 
 fn player_movement(

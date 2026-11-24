@@ -21,7 +21,9 @@ impl Plugin for EnemyPlugin {
             rng.random_range(2.0..3.0),
             TimerMode::Once,
         )));
-        app.add_systems(Update, (spawn_enemy, enemy_shoot_timer));
+        app.add_systems(Update, (spawn_enemy, enemy_shoot_timer).run_if(crate::escmenu::gameplay_running));
+        app.add_systems(OnEnter(AppState::InGame), reset_enemy_spawner);
+        app.add_systems(OnExit(AppState::InGame), despawn_enemies);
     }
 }
 
@@ -78,6 +80,21 @@ fn spawn_enemy(
         Transform::from_xyz(spawn_pos.x, spawn_pos.y, 1.0),
     ));
     timer.0 = Timer::from_seconds(rng.random_range(2.0..3.0), TimerMode::Once);
+}
+
+fn reset_enemy_spawner(mut timer: ResMut<EnemySpawnTimer>) {
+    let mut rng = rand::rng();
+
+    timer.0 = Timer::from_seconds(
+        rng.random_range(2.0..3.0),
+        TimerMode::Once,
+    );
+}
+
+fn despawn_enemies(mut commands: Commands, enemies: Query<Entity, With<Enemy>>,) {
+    for entity in &enemies {
+        commands.entity(entity).despawn();
+    }
 }
 
 fn enemy_shoot_timer(time: Res<Time>, mut query: Query<&mut EnemyShootTimer, With<Enemy>>) {

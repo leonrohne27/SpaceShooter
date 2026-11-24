@@ -8,6 +8,7 @@ mod health;
 mod menu;
 mod player;
 mod score;
+mod escmenu;
 
 use asteroid::AsteroidPlugin;
 use bevy::prelude::*;
@@ -19,6 +20,7 @@ use health::HealthPlugin;
 use menu::MenuPlugin;
 use player::PlayerPlugin;
 use score::ScorePlugin;
+use escmenu::EscMenuPlugin;
 
 #[derive(States, Debug, Clone, Copy, Default, Eq, PartialEq, Hash)]
 enum AppState {
@@ -42,6 +44,7 @@ fn main() {
         .init_state::<AppState>()
         .add_plugins(MenuPlugin)
         .add_plugins(GamePlugin)
+        .add_plugins(EscMenuPlugin)
         .add_plugins(PlayerPlugin)
         .add_plugins(BulletPlugin)
         .add_plugins(AsteroidPlugin)

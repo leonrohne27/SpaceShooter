@@ -45,14 +45,17 @@ fn spawn_hearts(
         5 // Fallback, falls kein Player gefunden wurde
     };
     commands
-        .spawn((Node {
-            width: Val::Percent(100.0),
-            position_type: PositionType::Absolute,
-            justify_content: JustifyContent::Center,
-            flex_direction: FlexDirection::Column,
-            bottom: Val::Px(5.0),
-            ..default()
-        },))
+        .spawn((
+            DespawnOnExit(AppState::InGame),
+            Node {
+                width: Val::Percent(100.0),
+                position_type: PositionType::Absolute,
+                justify_content: JustifyContent::Center,
+                flex_direction: FlexDirection::Column,
+                bottom: Val::Px(5.0),
+                ..default()
+            },
+        ))
         .with_children(|parent| {
             parent
                 .spawn(Node {

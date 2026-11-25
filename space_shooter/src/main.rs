@@ -4,6 +4,7 @@ mod button;
 mod collision;
 mod enemy;
 mod game;
+mod game_over;
 mod health;
 mod menu;
 mod player;
@@ -15,6 +16,7 @@ use bullet::BulletPlugin;
 use collision::CollisionPlugin;
 use enemy::EnemyPlugin;
 use game::GamePlugin;
+use game_over::GameOverPlugin;
 use health::HealthPlugin;
 use menu::MenuPlugin;
 use player::PlayerPlugin;
@@ -25,6 +27,7 @@ enum AppState {
     #[default]
     Menu,
     InGame,
+    GameOver,
 }
 
 fn main() {
@@ -49,6 +52,7 @@ fn main() {
         .add_plugins(EnemyPlugin)
         .add_plugins(CollisionPlugin)
         .add_plugins(ScorePlugin)
+        .add_plugins(GameOverPlugin)
         .run();
 }
 

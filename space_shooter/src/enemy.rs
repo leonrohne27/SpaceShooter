@@ -21,8 +21,17 @@ impl Plugin for EnemyPlugin {
             rng.random_range(2.0..3.0),
             TimerMode::Once,
         )));
-        app.add_systems(Update, (spawn_enemy, enemy_shoot_timer));
+        app.add_systems(OnEnter(AppState::InGame), reset_enemy_spawn_timer);
+        app.add_systems(
+            Update,
+            (spawn_enemy, enemy_shoot_timer).run_if(in_state(AppState::InGame)),
+        );
     }
+}
+
+fn reset_enemy_spawn_timer(mut timer: ResMut<EnemySpawnTimer>) {
+    let mut rng = rand::rng();
+    timer.0 = Timer::from_seconds(rng.random_range(2.0..3.0), TimerMode::Once);
 }
 
 const X_POSITIONS: [f32; 5] = [-250.0, -125.0, 0.0, 125.0, 250.0];
@@ -73,6 +82,7 @@ fn spawn_enemy(
 
     commands.spawn((
         Enemy,
+        DespawnOnExit(AppState::InGame),
         EnemyShootTimer(Timer::from_seconds(1.5, TimerMode::Repeating)),
         Sprite::from_image(asset_server.load("PNG/Enemies/enemyRed1.png")),
         Transform::from_xyz(spawn_pos.x, spawn_pos.y, 1.0),

@@ -1,3 +1,4 @@
+use crate::AppState;
 use crate::asteroid::Asteroid;
 use crate::bullet::EnemyBullet;
 use crate::bullet::PlayerBullet;
@@ -17,7 +18,8 @@ impl Plugin for CollisionPlugin {
                 player_enemy_bullet_collision,
                 player_asteroid_collision,
                 player_bullet_enemy_collision,
-            ),
+            )
+                .run_if(in_state(AppState::InGame)),
         );
     }
 }

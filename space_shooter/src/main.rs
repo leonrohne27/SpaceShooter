@@ -2,6 +2,8 @@ mod asteroid;
 mod bullet;
 mod button;
 mod collision;
+mod damage_effect;
+mod difficulty;
 mod enemy;
 mod game;
 mod health;
@@ -13,6 +15,8 @@ use asteroid::AsteroidPlugin;
 use bevy::prelude::*;
 use bullet::BulletPlugin;
 use collision::CollisionPlugin;
+use damage_effect::DamageEffectPlugin;
+use difficulty::DifficultyPlugin;
 use enemy::EnemyPlugin;
 use game::GamePlugin;
 use health::HealthPlugin;
@@ -49,6 +53,8 @@ fn main() {
         .add_plugins(EnemyPlugin)
         .add_plugins(CollisionPlugin)
         .add_plugins(ScorePlugin)
+        .add_plugins(DamageEffectPlugin)
+        .add_plugins(DifficultyPlugin)
         .run();
 }
 

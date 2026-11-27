@@ -40,6 +40,7 @@ fn player_bullet_shot(
 
     commands.spawn((
         PlayerBullet,
+        DespawnOnExit(AppState::InGame),
         Sprite::from_image(asset_server.load("PNG/Lasers/laserBlue05.png")),
         Transform::from_xyz(
             player_transform.translation.x,
@@ -58,6 +59,7 @@ pub fn enemy_bullet_shot(
         if shoot_timer.0.just_finished() {
             commands.spawn((
                 EnemyBullet,
+                DespawnOnExit(AppState::InGame),
                 Sprite::from_image(asset_server.load("PNG/Lasers/laserRed05.png")),
                 Transform::from_xyz(transform.translation.x, transform.translation.y - 40.0, 1.0),
             ));

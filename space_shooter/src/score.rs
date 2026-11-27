@@ -19,12 +19,17 @@ impl Plugin for ScorePlugin {
         app.insert_resource(Score { points: 0 });
         app.insert_resource(ScoreTimer(Timer::from_seconds(1.0, TimerMode::Repeating)));
 
-        app.add_systems(OnEnter(AppState::InGame), spawn_score_ui);
+        app.add_systems(OnEnter(AppState::InGame), (reset_score, spawn_score_ui));
         app.add_systems(
             Update,
             (score_over_time, update_score_ui).run_if(in_state(AppState::InGame)),
         );
     }
+}
+
+fn reset_score(mut score: ResMut<Score>, mut timer: ResMut<ScoreTimer>) {
+    score.points = 0;
+    timer.0.reset();
 }
 
 // Display the Score
@@ -43,6 +48,7 @@ fn spawn_score_ui(mut commands: Commands, asset_server: Res<AssetServer>) {
             ..default()
         },
         ScoreUI,
+        DespawnOnExit(AppState::InGame),
     ));
 }
 

@@ -27,11 +27,17 @@ impl Plugin for AsteroidPlugin {
             // initial Timer until first asteroids spawn
             timer: Timer::from_seconds(rng.random_range(2.0..3.0), TimerMode::Once),
         });
+        app.add_systems(OnEnter(AppState::InGame), reset_asteroid_spawner);
         app.add_systems(
             Update,
             (spawn_asteroid, move_asteroid).run_if(in_state(AppState::InGame)),
         );
     }
+}
+
+fn reset_asteroid_spawner(mut spawner: ResMut<AsteroidSpawner>) {
+    let mut rng = rand::rng();
+    spawner.timer = Timer::from_seconds(rng.random_range(2.0..3.0), TimerMode::Once);
 }
 
 fn choose_size() -> AsteroidSize {
@@ -81,6 +87,7 @@ fn spawn_asteroid(
 
         commands.spawn((
             Asteroid,
+            DespawnOnExit(AppState::InGame),
             Sprite::from_image(texture.clone()),
             Transform::from_xyz(x_coordinate, 300.0, 1.0),
         ));
